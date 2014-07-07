@@ -1,0 +1,47 @@
+//http://googlemaps.googlermania.com/google_maps_api_v3/en/custom_streetview/house.html
+
+<script type='text/javascript'>
+
+function code3_2() {
+  // Set StreetView provider.
+  var streetViewOptions = {
+    zoom: 1,
+    pano : "visitor_center",
+    panoProvider:  getCustomPanorama
+  };
+  // Create a StreetView object.
+  var streetViewDiv = document.getElementById('streetview_canvas1');
+  streetViewDiv.style.fontSize = "15px";
+  var streetView = new google.maps.StreetViewPanorama(streetViewDiv, streetViewOptions);
+}
+
+function getCustomPanoramaTileUrl(panoID, zoom, tileX, tileY) {
+  // Return a pano image given the panoID.
+  return "ardenwood_ardenwood_tiles/" + panoID + '/'  + tileX + '-' +tileY + '_s1.jpg';
+}
+
+function getCustomPanorama(panoID) {
+  var streetViewPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) Masashi Katsumata',
+    tiles: {
+        tileSize: new google.maps.Size(256, 256),
+        worldSize: new google.maps.Size(2048, 1024),
+        centerHeading: 0,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  switch(panoID) {
+    case "visitor_center":
+      streetViewPanoramaData["location"] = {
+        pano: 'visitor_center',
+        description: "Visitor center",
+        latLng: new google.maps.LatLng(37.556429,-122.050745)
+      };
+      return streetViewPanoramaData;
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', code3_2);
+    </script>
+
