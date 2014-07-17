@@ -30,47 +30,71 @@ function getCustomPanoramaTileUrl(panoID, zoom, tileX, tileY) {
 function getCustomPanorama(panoID) {
   var streetViewPanoramaData = {
     links: [],
-    copyright: 'Imagery (c) Masashi Katsumata',
+    copyright: 'Imagery (c) SEEMYPAD',
     tiles: {
         tileSize: new google.maps.Size(2048, 1024),
         worldSize: new google.maps.Size(2048, 1024),
-        centerHeading: 0,
+	centerHeading: 265,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  var entryPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) SEEMYPAD',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+	centerHeading: 0,
         getTileUrl: getCustomPanoramaTileUrl
      }
   };
   switch(panoID) {
-    case "backyard":
+    case "home":
       // Description of this point.
       streetViewPanoramaData["location"] = {
-        pano: 'backyard',
-        description: "Back yard",
+        pano: 'home',
+        description: "Living Room 1",
         latLng: new google.maps.LatLng(0, 0)
       };
       return streetViewPanoramaData;
       
-    case "diningroom":
+    case "entry":
       streetViewPanoramaData["location"] = {
-        pano: 'diningroom',
-        description: "Dining room",
+        pano: 'entry',
+        description: "Entry",
         latLng: new google.maps.LatLng(0, 0)
       };
-      return streetViewPanoramaData;
+      return entryPanoramaData;
       
     case "frontyard":
       streetViewPanoramaData["location"] = {
         pano: 'frontyard',
         description: "Front yard",
         latLng: new google.maps.LatLng(0, 0),
-	heading: 195,
+	centerHeading: 180
       };
       return streetViewPanoramaData;
-    case "bathroom":
+    case "formal":
       streetViewPanoramaData["location"] = {
-        pano: 'bathroom',
-        description: "Bathroom",
+        pano: 'formal',
+        description: "Formal Dining Room",
         latLng: new google.maps.LatLng(0, 0)
       };
-      return streetViewPanoramaData;      
+      return streetViewPanoramaData; 
+   case "kitchen":
+      streetViewPanoramaData["location"] = {
+        pano: 'kitchen',
+        description: "Kitchen",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData; 
+  case "deck":
+      streetViewPanoramaData["location"] = {
+        pano: 'deck',
+        description: "Deck",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;         
 
   }
 }
@@ -85,38 +109,69 @@ function createCustomLink() {
   switch(panoID) {
     case "frontyard":
       links.push({
-        description : "Dining Room",
-        pano : "diningroom",
-        heading : 180
-      });
+        description : "Entry",
+        pano : "entry",
+        heading : 0
+	});
       break;
-    case "backyard":
+    case "home":
       links.push({
-        description : "Dining Room",
-        pano : "diningroom",
-        heading : 180
+        description : "Entry",
+        pano : "entry",
+        heading : 140
       });
       break;
       
-    case "diningroom":
+    case "entry":
       links.push({
-        description : "Backyard",
-        pano : "backyard",
+        description : "Living Room 1",
+        pano : "home",
         heading : 90
       });
       links.push({
         description : "Front Yard",
         pano : "frontyard",
+        heading : 180
+      });
+        links.push({
+        description : "Formal Dining",
+        pano : "formal",
         heading : 270
       });
+	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 0
+      });
+
 
       break;
-case "bathroom":
+case "formal":
       links.push({
-        description : "diningroom",
-        pano : "diningroom",
+        description : "entry",
+        pano : "entry",
+        heading : 0
+	});
+        break;
+	case "kitchen":
+      links.push({
+        description : "entry",
+        pano : "entry",
         heading : 180
 	});
+        links.push({
+        description : "Deck",
+        pano : "deck",
+        heading : 0
+	});
+        break;
+case "deck":
+      links.push({
+        description : "kitchen",
+        pano : "kitchen",
+        heading : 90
+	});
+        break;
   }
 }
 
