@@ -8,7 +8,7 @@ var initPosPanoID, streetView;
 function initialize() {
   // Set StreetView provider.
   var streetViewOptions = {
-    zoom: 0,
+    zoom: 1,
     panoProvider:  getCustomPanorama,
     pano : "frontyard"
   };
@@ -32,7 +32,7 @@ function getCustomPanorama(panoID) {
     links: [],
     copyright: 'Imagery (c) Masashi Katsumata',
     tiles: {
-        tileSize: new google.maps.Size(256, 256),
+        tileSize: new google.maps.Size(2048, 1024),
         worldSize: new google.maps.Size(2048, 1024),
         centerHeading: 0,
         getTileUrl: getCustomPanoramaTileUrl
@@ -60,7 +60,8 @@ function getCustomPanorama(panoID) {
       streetViewPanoramaData["location"] = {
         pano: 'frontyard',
         description: "Front yard",
-        latLng: new google.maps.LatLng(0, 0)
+        latLng: new google.maps.LatLng(0, 0),
+	heading: 195,
       };
       return streetViewPanoramaData;
     case "bathroom":
@@ -101,23 +102,14 @@ function createCustomLink() {
       links.push({
         description : "Backyard",
         pano : "backyard",
-        heading : 0
+        heading : 90
       });
       links.push({
         description : "Front Yard",
         pano : "frontyard",
-        heading : 180
-      });
-       links.push({
-        description : "Bed Room",
-        pano : "bedroom",
-        heading : 90
-      });
-         links.push({
-        description : "BathRoom",
-        pano : "bathroom",
         heading : 270
       });
+
       break;
 case "bathroom":
       links.push({
@@ -140,6 +132,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <p id="demo">A Paragraph</p>
 
 <button type="button" onclick="myFunction()">Try it</button>
-<div id="streetview_canvas" style="width: 600px; height: 300px"></div
+<div id="streetview_canvas" style="width: 1200px; height: 600px"></div
 </body>
 </html>

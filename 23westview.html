@@ -95,7 +95,13 @@ function getCustomPanorama(panoID) {
         latLng: new google.maps.LatLng(0, 0)
       };
       return streetViewPanoramaData;         
-
+  case "mud":
+      streetViewPanoramaData["location"] = {
+        pano: 'mud',
+        description: "Mud Room",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;
   }
 }
 
@@ -153,7 +159,7 @@ case "formal":
         heading : 0
 	});
         break;
-	case "kitchen":
+case "kitchen":
       links.push({
         description : "entry",
         pano : "entry",
@@ -164,7 +170,19 @@ case "formal":
         pano : "deck",
         heading : 0
 	});
-        break;
+	links.push({
+        description : "Mud Room",
+        pano : "mud",
+        heading : 300
+	});
+	break;
+case "mud":	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 300
+	});
+	break;
+
 case "deck":
       links.push({
         description : "kitchen",

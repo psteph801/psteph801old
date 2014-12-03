@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script>
+var initPosPanoID, streetView;
+
+function initialize() {
+  // Set StreetView provider.
+  var streetViewOptions = {
+    zoom: 1,
+    panoProvider:  getCustomPanorama,
+    pano : "frontyard"
+  };
+  
+  // Create a StreetView object.
+  var streetViewDiv = document.getElementById('streetview_canvas');
+  streetView = new google.maps.StreetViewPanorama(streetViewDiv, streetViewOptions);
+
+  // Add links when it happens "links_change" event.
+  google.maps.event.addListener(streetView, "links_changed", createCustomLink);
+  
+}
+
+function getCustomPanoramaTileUrl(panoID, zoom, tileX, tileY) {
+  // Return a pano image given the panoID.
+  return "img/" + panoID +'.jpg';
+}
+
+function getCustomPanorama(panoID) {
+  var streetViewPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) Masashi Katsumata',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+        centerHeading: 265,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  var streetViewPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) Masashi Katsumata',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+        centerHeading: 265,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  switch(panoID) {
+    case "backyard":
+      // Description of this point.
+      streetViewPanoramaData["location"] = {
+        pano: 'backyard',
+        description: "Back yard",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData = {
+      centerHeading: 200}
+	      ;
+      
+    case "entry":
+      streetViewPanoramaData["location"] = {
+        pano: 'entry',
+        description: "Entry",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData = {
+      centerHeading: 200
+      };
+    case "frontyard":
+      streetViewPanoramaData["location"] = {
+        pano: 'frontyard',
+        description: "Front yard",
+        latLng: new google.maps.LatLng(0, 0)
+
+      };
+      return streetViewPanoramaData;
+    case "bathroom":
+      streetViewPanoramaData["location"] = {
+        pano: 'bathroom',
+        description: "Bathroom",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;      
+
+  }
+}
+
+function createCustomLink() {
+  /*
+   * add links
+   */
+  var links = streetView.getLinks();
+  var panoID = streetView.getPano();
+  
+  switch(panoID) {
+    case "frontyard":
+      links.push({
+        description : "Entry",
+        pano : "entry",
+        heading : 0
+      });
+      break;
+    case "backyard":
+      links.push({
+        description : "Dining Room",
+        pano : "diningroom",
+        heading : 180
+      });
+      break;
+      
+    case "entry":
+      links.push({
+        description : "Front Yard",
+        pano : "frontyard",
+        heading : 180
+      });
+      links.push({
+        description : "Living Room",
+        pano : "home",
+        heading : 90
+      });
+ 	links.push({
+        description : "Living Room 2",
+        pano : "formal",
+        heading : 270
+      });
+	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 0
+      });
+
+      break;
+	case "bathroom":
+      links.push({
+        description : "diningroom",
+        pano : "diningroom",
+        heading : 180
+	});
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+    </head>
+
+<body>
+
+<h1>My Web Page</h1>
+
+<p id="demo">A Paragraph</p>
+
+<button type="button" onclick="myFunction()">Try it</button>
+<div id="streetview_canvas" style="width: 1200px; height: 600px"></div
+</body>
+</html>

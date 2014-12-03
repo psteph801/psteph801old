@@ -1,0 +1,520 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+
+ <!-- BEGIN HEAD -->
+<head>
+   
+     <meta charset="UTF-8" />
+    <title>BCORE Admin Dashboard Template | Wizard</title>
+     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+     <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <!-- GLOBAL STYLES -->
+    <!-- GLOBAL STYLES -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/theme.css" />
+    <link rel="stylesheet" href="assets/css/MoneAdmin.css" />
+    <link rel="stylesheet" href="assets/plugins/Font-Awesome/css/font-awesome.css" />
+    <!--END GLOBAL STYLES -->
+
+    <!-- PAGE LEVEL STYLES -->
+    <link href="assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
+    <link href="assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
+    <link href="assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />    
+    <!-- END PAGE LEVEL  STYLES -->
+       <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+ <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script>
+var initPosPanoID, streetView;
+
+function initialize() {
+  // Set StreetView provider.
+  var streetViewOptions = {
+    zoom: 0,
+    panoProvider:  getCustomPanorama,
+    pano : "frontyard"
+  };
+  
+  // Create a StreetView object.
+  var streetViewDiv = document.getElementById('streetview_canvas');
+  streetView = new google.maps.StreetViewPanorama(streetViewDiv, streetViewOptions);
+
+  // Add links when it happens "links_change" event.
+  google.maps.event.addListener(streetView, "links_changed", createCustomLink);
+  
+}
+
+function getCustomPanoramaTileUrl(panoID, zoom, tileX, tileY) {
+  // Return a pano image given the panoID.
+  return "img/" + panoID +'.jpg';
+}
+
+function getCustomPanorama(panoID) {
+  var streetViewPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) SEEMYPAD',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+	centerHeading: 265,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  var entryPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) SEEMYPAD',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+	centerHeading: 0,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  switch(panoID) {
+    case "home":
+      // Description of this point.
+      streetViewPanoramaData["location"] = {
+        pano: 'home',
+        description: "Living Room 1",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;
+      
+    case "entry":
+      streetViewPanoramaData["location"] = {
+        pano: 'entry',
+        description: "Entry",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return entryPanoramaData;
+      
+    case "frontyard":
+      streetViewPanoramaData["location"] = {
+        pano: 'frontyard',
+        description: "Front yard",
+        latLng: new google.maps.LatLng(0, 0),
+	centerHeading: 180
+      };
+      return streetViewPanoramaData;
+    case "formal":
+      streetViewPanoramaData["location"] = {
+        pano: 'formal',
+        description: "Formal Dining Room",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData; 
+   case "kitchen":
+      streetViewPanoramaData["location"] = {
+        pano: 'kitchen',
+        description: "Kitchen",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData; 
+  case "deck":
+      streetViewPanoramaData["location"] = {
+        pano: 'deck',
+        description: "Deck",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;         
+  case "mud":
+      streetViewPanoramaData["location"] = {
+        pano: 'mud',
+        description: "Mud Room",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;
+  }
+}
+
+function createCustomLink() {
+  /*
+   * add links
+   */
+  var links = streetView.getLinks();
+  var panoID = streetView.getPano();
+  
+  switch(panoID) {
+    case "frontyard":
+      links.push({
+        description : "1.",
+        pano : "entry",
+        heading : 0
+	});
+      links.push({
+        description : "2.",
+        pano : "home",
+        heading : 90
+      });
+      links.push({
+        description : "4.",
+        pano : "frontyard",
+        heading : 180
+      });
+        links.push({
+        description : "3.",
+        pano : "formal",
+        heading : 270
+      });
+      break;
+    case "home":
+      links.push({
+        description : "Entry",
+        pano : "entry",
+        heading : 140
+      });
+      break;
+      
+    case "entry":
+      links.push({
+        description : "Living Room 1",
+        pano : "home",
+        heading : 90
+      });
+      links.push({
+        description : "Front Yard",
+        pano : "frontyard",
+        heading : 180
+      });
+        links.push({
+        description : "Formal Dining",
+        pano : "formal",
+        heading : 270
+      });
+	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 0
+      });
+
+
+      break;
+case "formal":
+      links.push({
+        description : "entry",
+        pano : "entry",
+        heading : 0
+	});
+        break;
+case "kitchen":
+      links.push({
+        description : "entry",
+        pano : "entry",
+        heading : 180
+	});
+        links.push({
+        description : "Deck",
+        pano : "deck",
+        heading : 0
+	});
+	links.push({
+        description : "Mud Room",
+        pano : "mud",
+        heading : 300
+	});
+	break;
+case "mud":	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 300
+	});
+	break;
+
+case "deck":
+      links.push({
+        description : "kitchen",
+        pano : "kitchen",
+        heading : 90
+	});
+        break;
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+</head>
+     <!-- END HEAD -->
+
+     <!-- BEGIN BODY -->
+<body class="padTop53 " >
+
+     <!-- MAIN WRAPPER -->
+    <div id="wrap">
+
+
+    <!-- HEADER SECTION -->
+        <div id="top">
+
+            <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-bottom: 10px;">
+                <a data-original-title="Show/Hide Menu" data-placement="bottom" data-tooltip="tooltip" class="accordion-toggle btn btn-primary btn-sm visible-xs" data-toggle="collapse" href="#menu" id="menu-toggle">
+                    <i class="icon-align-justify"></i>
+                </a>
+                <!-- LOGO SECTION -->
+        <header class="navbar-header">
+
+                    <a href="index.html" class="navbar-brand">
+                    <Strong> OJOME </Strong>
+		    
+                        </a>
+                </header>
+
+                <!-- END LOGO SECTION -->
+                <ul class="nav navbar-top-links navbar-right">
+
+                    <!-- MESSAGES SECTION -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="label label-success">2</span>    <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <a href="#">
+                                    <div>
+                                       <strong>John Smith</strong>
+                                        <span class="pull-right text-muted">
+                                            <em>Today</em>
+                                        </span>
+                                    </div>
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing.
+                                        <br />
+                                        <span class="label label-primary">Important</span> 
+
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <strong>Raphel Jonson</strong>
+                                        <span class="pull-right text-muted">
+                                            <em>Yesterday</em>
+                                        </span>
+                                    </div>
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing.
+                                         <br />
+                                        <span class="label label-success"> Moderate </span> 
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <strong>Chi Ley Suk</strong>
+                                        <span class="pull-right text-muted">
+                                            <em>26 Jan 2014</em>
+                                        </span>
+                                    </div>
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing.
+                                         <br />
+                                        <span class="label label-danger"> Low </span> 
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a class="text-center" href="#">
+                                    <strong>Read All Messages</strong>
+                                    <i class="icon-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <!--END MESSAGES SECTION -->
+
+                    <!--ADMIN SETTINGS SECTIONS -->
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-user "></i>&nbsp; <i class="icon-chevron-down "></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#"><i class="icon-user"></i> User Profile </a>
+                            </li>
+                            <li><a href="#"><i class="icon-gear"></i> Settings </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="login.html"><i class="icon-signout"></i> Logout </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <!--END ADMIN SETTINGS -->
+                </ul>
+
+            </nav>
+
+        </div>
+        <!-- END HEADER SECTION -->
+
+
+
+        <!-- MENU SECTION -->
+       
+        <!--END MENU SECTION -->
+
+
+        <!--PAGE CONTENT -->
+	   
+        <div id="content">
+
+            <div class="inner" >
+                <div class="row">
+                    <div class="col-lg-12">
+
+
+                    
+
+                     
+         <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Walkthrough Wizard
+                        </div>
+                        <div class="panel-body">
+                            <div id="wizard" >
+                <h2> Take Pics </h2>
+                <section>
+                   
+                           <form role="form">
+                                        <div class="form-group">
+                                            <label>Apple and windows phone </label>
+                                            <li><a href="https://photosynth.net/create.aspx"> Link to app to take pics</a>
+                                            <li><a href="https://www.youtube.com/watch?v=llLETbE16qQ"> See video how to use app</a>
+
+                                        </div>
+                                       
+                                       <div class="form-group">
+                                            <label>Android</label>
+                                            <li><a href="https://play.google.com/store/apps/details?id=com.google.android.GoogleCamera&hl=en"> Link to app to take pics </a>
+                                            <li><a href="https://www.youtube.com/watch?v=NPs3eIiWRaw"> See Video on how to use app </a>
+                                        </div>
+                                        
+                                      
+                                       
+                                    </form>
+                    
+                </section>
+
+                <h2> Upload and Name </h2>
+                <section>
+                   <form role="form">
+                                        <div class="form-group">
+                                            <label>Upload</label>
+                                            <input class="form-control" />
+                                            <p class="help-block">Upload all the pic's that you just took.</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Preview and Name</label>
+                                            <input class="form-control" />
+                                            <p class="help-block">Name all the rooms accordingly EG. Living room, Master Bedroom</p>
+                                        </div>
+                                     
+                                       
+                                    </form>
+                </section>
+
+                <h2> Connect </h2>
+                <section>
+                      <form role="form">
+                                        <div class="form-group">
+                                            <label>Picture 1</label>
+                                            <input class="form-control" />
+                                            <p class="help-block">0____________    90______________   180____________   270____________  </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label> Picture 2 </label>
+                                            <input class="form-control" />
+                                            <p class="help-block">0____________    90______________   180____________   270____________</p>
+                                        </div>
+                                       <div class="form-group">
+                                            <label> Picture 3 </label>
+                                            <input class="form-control" />
+                                            <p class="help-block">0____________    90______________   180____________   270____________</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label> Picture 4 </label>
+                                            <input class="form-control" />
+                                            <p class="help-block">0____________    90______________   180____________   270____________</p>
+                                        </div>
+	                                    <div class="form-group">
+	                                            <label> Picture 5 </label>
+	                                            <input class="form-control" />
+	                                            <p class="help-block">0____________    90______________   180____________   270____________</p>
+	                                     </div
+                                    </form>
+                </section>
+
+                <h2>Preview</h2>
+                <section>
+                    <p style="text-align:justify;color:gray;">
+                        <b> Preview</b> <br /><br />
+                        <div id="streetview_canvas" style="width: 300px; height: 150px"></div>
+                        <br /><br />
+                        <div id="streetview_canvas" style="width: 300px; height: 150px"></div>
+                        <div id="streetview_canvas" style="width: 300px; height: 150px"></div>
+                        <br />
+                       
+                        
+                    </p>
+                </section>
+            </div>
+                             
+                        </div>
+                    </div>
+
+           
+
+            
+                 </div>
+
+                    </div>
+
+            </div>
+
+
+
+
+
+        </div>
+       <!--END PAGE CONTENT -->
+
+
+    </div>
+
+     <!--END MAIN WRAPPER -->
+
+   <!-- FOOTER -->
+    <div id="footer" style="vertical-align:text-top;">
+        <p >&copy;  binarytheme &nbsp;2014 &nbsp;</p>
+        
+    </div>
+    
+    <!--END FOOTER -->
+     <!-- GLOBAL SCRIPTS -->
+    <script src="assets/plugins/jquery-2.0.3.min.js"></script>
+     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <!-- END GLOBAL SCRIPTS -->
+    <!-- PAGE LEVEL SCRIPTS -->
+    <script src="assets/plugins/jquery-steps-master/lib/jquery.cookie-1.3.1.js"></script>
+    <script src="assets/plugins/jquery-steps-master/build/jquery.steps.js"></script>   
+    <script src="assets/js/WizardInit.js"></script>
+         <!--END PAGE LEVEL SCRIPTS -->
+</body>
+     <!-- END BODY -->
+</html>

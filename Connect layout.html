@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script>
+var initPosPanoID, streetView;
+
+function initialize() {
+  // Set StreetView provider.
+  var streetViewOptions = {
+    zoom: 0,
+    panoProvider:  getCustomPanorama,
+    pano : "frontyard"
+  };
+  
+  // Create a StreetView object.
+  var streetViewDiv = document.getElementById('streetview_canvas');
+  streetView = new google.maps.StreetViewPanorama(streetViewDiv, streetViewOptions);
+
+  // Add links when it happens "links_change" event.
+  google.maps.event.addListener(streetView, "links_changed", createCustomLink);
+  
+}
+
+function getCustomPanoramaTileUrl(panoID, zoom, tileX, tileY) {
+  // Return a pano image given the panoID.
+  return "img/" + panoID +'.jpg';
+}
+
+function getCustomPanorama(panoID) {
+  var streetViewPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) SEEMYPAD',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+	centerHeading: 265,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  var entryPanoramaData = {
+    links: [],
+    copyright: 'Imagery (c) SEEMYPAD',
+    tiles: {
+        tileSize: new google.maps.Size(2048, 1024),
+        worldSize: new google.maps.Size(2048, 1024),
+	centerHeading: 0,
+        getTileUrl: getCustomPanoramaTileUrl
+     }
+  };
+  switch(panoID) {
+    case "home":
+      // Description of this point.
+      streetViewPanoramaData["location"] = {
+        pano: 'home',
+        description: "Living Room 1",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;
+      
+    case "entry":
+      streetViewPanoramaData["location"] = {
+        pano: 'entry',
+        description: "Entry",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return entryPanoramaData;
+      
+    case "frontyard":
+      streetViewPanoramaData["location"] = {
+        pano: 'frontyard',
+        description: "Front yard",
+        latLng: new google.maps.LatLng(0, 0),
+	centerHeading: 180
+      };
+      return streetViewPanoramaData;
+    case "formal":
+      streetViewPanoramaData["location"] = {
+        pano: 'formal',
+        description: "Formal Dining Room",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData; 
+   case "kitchen":
+      streetViewPanoramaData["location"] = {
+        pano: 'kitchen',
+        description: "Kitchen",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData; 
+  case "deck":
+      streetViewPanoramaData["location"] = {
+        pano: 'deck',
+        description: "Deck",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;         
+  case "mud":
+      streetViewPanoramaData["location"] = {
+        pano: 'mud',
+        description: "Mud Room",
+        latLng: new google.maps.LatLng(0, 0)
+      };
+      return streetViewPanoramaData;
+  }
+}
+
+function createCustomLink() {
+  /*
+   * add links
+   */
+  var links = streetView.getLinks();
+  var panoID = streetView.getPano();
+  
+  switch(panoID) {
+    case "frontyard":
+      links.push({
+        description : "1.",
+        pano : "entry",
+        heading : 0
+	});
+      links.push({
+        description : "2.",
+        pano : "home",
+        heading : 90
+      });
+      links.push({
+        description : "4.",
+        pano : "frontyard",
+        heading : 180
+      });
+        links.push({
+        description : "3.",
+        pano : "formal",
+        heading : 270
+      });
+      break;
+    case "home":
+      links.push({
+        description : "Entry",
+        pano : "entry",
+        heading : 140
+      });
+      break;
+      
+    case "entry":
+      links.push({
+        description : "Living Room 1",
+        pano : "home",
+        heading : 90
+      });
+      links.push({
+        description : "Front Yard",
+        pano : "frontyard",
+        heading : 180
+      });
+        links.push({
+        description : "Formal Dining",
+        pano : "formal",
+        heading : 270
+      });
+	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 0
+      });
+
+
+      break;
+case "formal":
+      links.push({
+        description : "entry",
+        pano : "entry",
+        heading : 0
+	});
+        break;
+case "kitchen":
+      links.push({
+        description : "entry",
+        pano : "entry",
+        heading : 180
+	});
+        links.push({
+        description : "Deck",
+        pano : "deck",
+        heading : 0
+	});
+	links.push({
+        description : "Mud Room",
+        pano : "mud",
+        heading : 300
+	});
+	break;
+case "mud":	links.push({
+        description : "Kitchen",
+        pano : "kitchen",
+        heading : 300
+	});
+	break;
+
+case "deck":
+      links.push({
+        description : "kitchen",
+        pano : "kitchen",
+        heading : 90
+	});
+        break;
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+    </head>
+
+<body>
+<div id="streetview_canvas" style="width: 300px; height: 150px"></div>
+</body>
+</html>
